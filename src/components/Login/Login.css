@@ -1,0 +1,71 @@
+.form-container {
+  margin: auto;
+  width: 380px;
+  border: 1px solid gray;
+  padding-left: 3%;
+  padding-top: 3%;
+  border-radius: 5px;
+}
+.signing-form {
+  width: 100%;
+}
+.form-container input {
+  width: 100%;
+  margin: 12px 0;
+  height: 40px;
+  background-color: #e4e1e180;
+  border-radius: 5px;
+}
+
+.form-img {
+  width: 100%;
+}
+
+.error {
+  color: red;
+}
+
+.submit-btn {
+  background-color: orange !important;
+  color: black !important;
+}
+
+.submit-btn:disabled {
+  background-color: gray !important;
+}
+.toggle-btn {
+  color: rgb(255, 0, 76) !important;
+}
+
+.or-line {
+  width: 90%;
+  border-bottom: 1px solid;
+  text-align: center;
+  line-height: 0.1em;
+  margin: 10px 0 20px;
+}
+
+.or-line span {
+  background-color: white;
+  padding: 0 2%;
+}
+
+.login-alternative {
+  width: 90%;
+  height: 33px;
+  border-radius: 20px;
+  border: 1px solid;
+  margin-bottom: 15px;
+}
+
+.login-alternative img {
+  width: 28px;
+  padding: 4px 4px;
+  float: left;
+}
+
+.login-alternative h6 {
+  float: left;
+  text-align: center;
+  width: 250px;
+}
