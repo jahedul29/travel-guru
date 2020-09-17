@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import { UserContext } from "../../App";
+import { UserAndPlaceContext } from "../../App";
 import fakeHotels from "../../fakedata/hotels";
 import fakeLocations from "../../fakedata/location";
 import Hotel from "../Hotel/Hotel";
@@ -8,19 +8,24 @@ import { Map, Marker, TileLayer } from "react-leaflet";
 import "./AvailableHotels.css";
 
 const AvailableHotels = () => {
-  const { selectedPlace } = useContext(UserContext);
+  // Receiving data from context
+  const { selectedPlace } = useContext(UserAndPlaceContext);
+  // State for storing all hotels information
   const [hotels, setHotels] = useState([]);
+  // State for storing location information
   const [selectedLocation, setSelectedLocation] = useState({
     id: "",
     lat: "",
     long: "",
   });
 
+  // Loading all hotels information
   useEffect(() => {
     const loadedHotels = fakeHotels;
     setHotels(loadedHotels);
   }, []);
 
+  // Loading location information of selected
   useEffect(() => {
     const loadedLocation = fakeLocations.find(
       (location) => location.id === selectedPlace.id
@@ -31,12 +36,15 @@ const AvailableHotels = () => {
   return (
     <Container>
       <Row>
+        {/* Available hotel information */}
         <Col md={6}>
           <h5>Stay in {selectedPlace.placeName}</h5>
           {hotels.map((hotel) => (
-            <Hotel hotel={hotel} />
+            <Hotel key={hotel.id} hotel={hotel} />
           ))}
         </Col>
+
+        {/* Google map */}
         <Col md={6}>
           <div className="map-container">
             <Map

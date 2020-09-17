@@ -2,12 +2,14 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 import firebaseConfig from "../../firebase.config";
 
+// function for initializing login framework
 export const initializeLoginFramework = () => {
   if (firebase.app.length) {
     firebase.initializeApp(firebaseConfig);
   }
 };
 
+// Google sign In handler
 export const handleGoogleSignIn = () => {
   var provider = new firebase.auth.GoogleAuthProvider();
 
@@ -15,7 +17,6 @@ export const handleGoogleSignIn = () => {
     .auth()
     .signInWithPopup(provider)
     .then((res) => {
-      var token = res.credential.accessToken;
       var user = res.user;
       const newUser = {
         name: user.displayName,
@@ -39,7 +40,6 @@ export const handleFbLogin = () => {
     .auth()
     .signInWithPopup(provider)
     .then(function (result) {
-      var token = result.credential.accessToken;
       var user = result.user;
       console.log(user);
       const newUser = {
@@ -56,6 +56,7 @@ export const handleFbLogin = () => {
     });
 };
 
+// Email and Password account creator handler
 export const handleCreateWithEmailAndPassword = (name, email, password) => {
   return firebase
     .auth()
@@ -73,6 +74,7 @@ export const handleCreateWithEmailAndPassword = (name, email, password) => {
     });
 };
 
+// Email and Password login handler
 export const handleSignInWithEmailAndPassword = (email, password) => {
   return firebase
     .auth()
@@ -89,6 +91,7 @@ export const handleSignInWithEmailAndPassword = (email, password) => {
     });
 };
 
+// Sign Out handler
 export const handleSignOut = () => {
   return firebase
     .auth()
@@ -106,6 +109,7 @@ export const handleSignOut = () => {
     });
 };
 
+// function for updating existing user name
 const updateCurrentUserInfo = (name) => {
   const user = firebase.auth().currentUser;
 

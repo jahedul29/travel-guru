@@ -1,22 +1,21 @@
 import React, { createContext, useState } from "react";
-import logo from "./logo.svg";
-import "./App.css";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Header from "./components/Header/Header";
-import Switch from "react-bootstrap/esm/Switch";
 import Home from "./components/Home/Home";
 import StartBooking from "./components/StartBooking/StartBooking";
 import Login from "./components/Login/Login";
 import AvailableHotels from "./components/AvailableHotels/AvailableHotels";
+import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
+import NotFound from "./components/NotFound/NotFound";
 
-export const UserContext = createContext();
+export const UserAndPlaceContext = createContext();
 
 function App() {
   const [loggedInUser, setLoggedInUser] = useState({});
   const [selectedPlace, setSelectedPlace] = useState({});
 
   return (
-    <UserContext.Provider
+    <UserAndPlaceContext.Provider
       value={{ loggedInUser, setLoggedInUser, selectedPlace, setSelectedPlace }}
     >
       <Router>
@@ -25,18 +24,24 @@ function App() {
           <Route exact path="/">
             <Home />
           </Route>
+          <Route path="/home">
+            <Home />
+          </Route>
           <Route path="/book">
             <StartBooking />
           </Route>
-          <Route path="/availableHotels">
+          <PrivateRoute path="/availableHotels">
             <AvailableHotels />
-          </Route>
+          </PrivateRoute>
           <Route path="/login">
             <Login />
           </Route>
+          <Route path="*">
+            <NotFound />
+          </Route>
         </Switch>
       </Router>
-    </UserContext.Provider>
+    </UserAndPlaceContext.Provider>
   );
 }
 

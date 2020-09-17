@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { Container } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useHistory, useLocation } from "react-router-dom";
-import { UserContext } from "../../App";
+import { UserAndPlaceContext } from "../../App";
 import "./Login.css";
 import {
   handleCreateWithEmailAndPassword,
@@ -16,14 +16,19 @@ import {
 initializeLoginFramework();
 
 const Login = () => {
+  // Hooks for react-form-hooks
   const { register, handleSubmit, errors, getValues } = useForm();
+  // state for toggling new user and registered user
   const [isNewUser, setIsNewUser] = useState(true);
+  // State for storing form data
   const [user, setUser] = useState({
     name: "",
     email: "",
     password: "",
   });
-  const { loggedInUser, setLoggedInUser } = useContext(UserContext);
+  // state for storing logged in user data
+  const { loggedInUser, setLoggedInUser } = useContext(UserAndPlaceContext);
+  // State for storing login error message
   const [errorMessage, setErrorMessage] = useState("");
 
   let history = useHistory();
@@ -92,8 +97,6 @@ const Login = () => {
     });
   };
 
-  console.log(loggedInUser);
-
   return (
     <Container>
       <div className="form-container">
@@ -141,7 +144,7 @@ const Login = () => {
             className="form-control"
             name="email"
             ref={register({
-              required: true,
+              required: "Email required",
               pattern: {
                 value: /^([a-zA-Z0-9_\-\\.]+)@([a-zA-Z0-9_\-\\.]+)\.([a-zA-Z]{2,5})$/,
                 message: "Enter a valid email",
@@ -158,7 +161,7 @@ const Login = () => {
             className="form-control"
             name="password"
             ref={register({
-              required: true,
+              required: "Password required",
               pattern: {
                 value: /^([a-zA-Z0-9@*#]{8,15})$/,
                 message:
@@ -193,7 +196,10 @@ const Login = () => {
             value={isNewUser ? "Sign Up" : "Sign In"}
           />
           <input
-            onClick={() => setIsNewUser(!isNewUser)}
+            onClick={() => {
+              setIsNewUser(!isNewUser);
+              setErrorMessage("");
+            }}
             type="button"
             className="form-control toggle-btn text-center"
             value={

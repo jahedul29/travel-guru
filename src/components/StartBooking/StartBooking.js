@@ -1,13 +1,15 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import "./StartBooking.css";
 import { Controller, useForm } from "react-hook-form";
-import { UserContext } from "../../App";
+import { UserAndPlaceContext } from "../../App";
 import ReactDatePicker from "react-datepicker";
 
+// importing datepicker css
 import "react-datepicker/dist/react-datepicker.css";
 
+// default values for useForms parameter
 const defaultvalues = {
   from: "",
   to: "",
@@ -17,11 +19,16 @@ const defaultvalues = {
 
 const StartBooking = () => {
   const history = useHistory();
-  const { register, handleSubmit, watch, errors, control } = useForm({
+
+  // hooks for react-hooks-form
+  const { register, handleSubmit, errors, control } = useForm({
     defaultvalues,
   });
-  const { selectedPlace } = useContext(UserContext);
 
+  // Receiving data from context
+  const { selectedPlace } = useContext(UserAndPlaceContext);
+
+  // State for getting form data
   const [formData, setFormData] = useState({
     origin: "",
     destination: "",
@@ -29,39 +36,29 @@ const StartBooking = () => {
     to: "",
   });
 
+  // Function to handle form submit
   const onSubmit = (data) => {
     setFormData(data);
     history.push("/availableHotels");
   };
 
-  console.log(formData);
+  // destructuring required data
+  const { placeName, description } = selectedPlace;
 
   return (
     <Container className="booking-container" fluid>
       <section className="banner">
         <Row>
+          {/* Booking place details */}
           <Col md={6}>
-            <h1>{selectedPlace.placeName}</h1>
-            <p>{selectedPlace.description}</p>
+            <h1>{placeName}</h1>
+            <p>{description}</p>
           </Col>
+
+          {/* Booking Form */}
           <Col md={6}>
-            <div
-              style={{
-                width: "420px",
-                height: "280px",
-                backgroundColor: "white",
-                borderRadius: "10px",
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              <form
-                style={{
-                  width: "400px",
-                  marginLeft: "30px",
-                }}
-                onSubmit={handleSubmit(onSubmit)}
-              >
+            <div className="booking-form-container">
+              <form className="booking-form" onSubmit={handleSubmit(onSubmit)}>
                 <input
                   className="form-control"
                   placeholder="Origin"
@@ -82,6 +79,7 @@ const StartBooking = () => {
                   <span className="error">{errors.destination.message}</span>
                 )}
 
+                {/* React detepickers */}
                 <div style={{ width: "355px", margin: "15px 0px" }}>
                   <div style={{ float: "left", width: "50%" }}>
                     <Controller

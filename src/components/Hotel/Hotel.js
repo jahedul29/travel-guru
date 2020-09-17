@@ -4,7 +4,6 @@ import "./Hotel.css";
 
 const Hotel = (props) => {
   const {
-    id,
     hotelName,
     guests,
     bedrooms,
@@ -18,9 +17,12 @@ const Hotel = (props) => {
 
   return (
     <Row>
+      {/* Hotel image column */}
       <Col md={6} className="mb-2">
         <img className="hotel-img" src={photoUrl} alt="" />
       </Col>
+
+      {/* Hotel information column */}
       <Col className="hotel-info" md={6}>
         <h6>{hotelName}</h6>
         <br />

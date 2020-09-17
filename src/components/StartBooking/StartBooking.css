@@ -9,6 +9,20 @@
   height: 600px;
 }
 
+.booking-form {
+  width: 400px;
+  margin-left: 30px;
+}
+
+.booking-form-container {
+  width: 420px;
+  height: 280px;
+  background-color: white;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+}
+
 .form-control:focus {
   font-weight: 600;
   font-size: 20px;
