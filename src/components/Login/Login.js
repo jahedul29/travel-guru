@@ -92,6 +92,7 @@ const Login = () => {
   //! Fb login needs url
   const fbLoginIn = () => {
     handleFbLogin().then((res) => {
+      console.log(res);
       setLoggedInUser(res);
       history.replace(from);
     });
@@ -100,7 +101,7 @@ const Login = () => {
   return (
     <Container>
       <div className="form-container">
-        {loggedInUser.email && <h5>Welcome {loggedInUser.name}</h5>}
+        {loggedInUser.name && <h5>Welcome {loggedInUser.name}</h5>}
         <h4>{isNewUser ? "Create an account" : "Sign In"}</h4>
         <form className="signing-form" onSubmit={handleSubmit(onSubmit)}>
           {isNewUser && (

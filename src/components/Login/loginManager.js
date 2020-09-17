@@ -41,7 +41,6 @@ export const handleFbLogin = () => {
     .signInWithPopup(provider)
     .then(function (result) {
       var user = result.user;
-      console.log(user);
       const newUser = {
         name: user.displayName,
         email: user.email,

@@ -18,7 +18,7 @@ const Header = () => {
   let history = useHistory();
 
   const handleLoggingButton = () => {
-    if (loggedInUser.email) {
+    if (loggedInUser.name) {
       handleSignOut();
       setLoggedInUser({});
       history.push("/");
@@ -64,7 +64,7 @@ const Header = () => {
             className="orange-link-button"
             href="#pricing"
           >
-            {loggedInUser.email ? "LogOut" : "Login"}
+            {loggedInUser.name ? "LogOut" : "Login"}
           </Nav.Link>
         </Nav>
       </Navbar>
