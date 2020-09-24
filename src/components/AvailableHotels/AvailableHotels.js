@@ -9,7 +9,9 @@ import "./AvailableHotels.css";
 
 const AvailableHotels = () => {
   // Receiving data from context
-  const { selectedPlace } = useContext(UserAndPlaceContext);
+  const { selectedPlace, setHeaderStyle, bookingInfo } = useContext(
+    UserAndPlaceContext
+  );
   // State for storing all hotels information
   const [hotels, setHotels] = useState([]);
   // State for storing location information
@@ -21,9 +23,12 @@ const AvailableHotels = () => {
 
   // Loading all hotels information
   useEffect(() => {
-    const loadedHotels = fakeHotels;
+    const loadedHotels = fakeHotels.filter(
+      (hotel) => hotel.placeId === selectedPlace.id
+    );
     setHotels(loadedHotels);
-  }, []);
+    setHeaderStyle("white");
+  }, [selectedPlace.id, setHeaderStyle]);
 
   // Loading location information of selected
   useEffect(() => {
@@ -37,11 +42,22 @@ const AvailableHotels = () => {
     <Container>
       <Row>
         {/* Available hotel information */}
-        <Col md={6}>
-          <h5>Stay in {selectedPlace.placeName}</h5>
-          {hotels.map((hotel) => (
-            <Hotel key={hotel.id} hotel={hotel} />
-          ))}
+        <Col md={6} className="mb-4">
+          {!hotels.length ? (
+            <h3>No hotels are free</h3>
+          ) : (
+            <div>
+              <h5>Stay in {selectedPlace.placeName}</h5>
+              <p>
+                from{" "}
+                {bookingInfo.from.getDate() + "/" + bookingInfo.from.getMonth()}{" "}
+                to {bookingInfo.to.getDate() + "/" + bookingInfo.to.getMonth()}
+              </p>
+              {hotels.map((hotel) => (
+                <Hotel key={hotel.id} hotel={hotel} />
+              ))}
+            </div>
+          )}
         </Col>
 
         {/* Google map */}

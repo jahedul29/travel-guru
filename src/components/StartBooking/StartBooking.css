@@ -1,29 +1,21 @@
-.booking-container {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url("https://i.imgur.com/KsEpvcc.jpg");
-  margin: 0;
-  background-size: cover;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  height: 600px;
-}
-
 .booking-form {
-  width: 400px;
-  margin-left: 30px;
+  width: 371px;
 }
 
 .booking-form-container {
-  width: 420px;
+  width: 400px;
   height: 280px;
   background-color: white;
   border-radius: 10px;
   display: flex;
   align-items: center;
+  justify-content: center;
+  -moz-box-shadow: inset 0 0 5px gray;
+  -webkit-box-shadow: inset 0 0 5px gray;
+  box-shadow: inset 0 0 5px gray;
 }
 
 .form-control:focus {
   font-weight: 600;
-  font-size: 20px;
+  font-size: 17px;
 }

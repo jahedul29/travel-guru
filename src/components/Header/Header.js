@@ -14,7 +14,9 @@ const searchIconStyle = {
 };
 
 const Header = () => {
-  const { loggedInUser, setLoggedInUser } = useContext(UserAndPlaceContext);
+  const { loggedInUser, setLoggedInUser, headerStyle } = useContext(
+    UserAndPlaceContext
+  );
   let history = useHistory();
 
   const handleLoggingButton = () => {
@@ -28,45 +30,67 @@ const Header = () => {
   };
 
   return (
-    <Container fluid>
-      <Navbar style={{ margin: "0 4%" }}>
-        <Navbar.Brand style={{ width: "10%" }} href="">
+    <Container fluid style={{ marginBottom: "50px" }}>
+      <Navbar collapseOnSelect expand="lg">
+        <Navbar.Brand href="">
           <Link to="/">
             <img
-              className="brand-img"
+              className={headerStyle ? "brand-img-black" : "brand-img"}
               src="https://i.imgur.com/51EpLUJ.png"
               alt=""
             />
           </Link>
         </Navbar.Brand>
-        <Form inline>
-          <FormControl type="text" placeholder="Search" />
-          <FontAwesomeIcon
-            icon={faSearch}
-            style={searchIconStyle}
-          ></FontAwesomeIcon>
-        </Form>
-        <Nav>
-          <Nav.Link className="orange-link-button" href="#home">
-            News
-          </Nav.Link>
-          <Nav.Link className="orange-link-button" href="#features">
-            Destination
-          </Nav.Link>
-          <Nav.Link className="orange-link-button" href="#pricing">
-            Blog
-          </Nav.Link>
-          <Nav.Link className="orange-link-button" href="#pricing">
-            Contact
-          </Nav.Link>
-          <Nav.Link
-            onClick={handleLoggingButton}
-            className="orange-link-button"
-            href="#pricing"
-          >
-            {loggedInUser.name ? "LogOut" : "Login"}
-          </Nav.Link>
-        </Nav>
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="mr-auto">
+            <Form inline style={{ width: "100%" }}>
+              <FormControl type="text" placeholder="Search" />
+              <FontAwesomeIcon
+                icon={faSearch}
+                style={searchIconStyle}
+              ></FontAwesomeIcon>
+            </Form>
+          </Nav>
+          <Nav style={{ width: "60%" }}>
+            <Nav.Link
+              className={
+                headerStyle ? "orange-link-black" : "orange-link-button"
+              }
+            >
+              News
+            </Nav.Link>
+            <Nav.Link
+              className={
+                headerStyle ? "orange-link-black" : "orange-link-button"
+              }
+            >
+              Destination
+            </Nav.Link>
+            <Nav.Link
+              className={
+                headerStyle ? "orange-link-black" : "orange-link-button"
+              }
+            >
+              Blog
+            </Nav.Link>
+            <Nav.Link
+              className={
+                headerStyle ? "orange-link-black" : "orange-link-button"
+              }
+            >
+              Contact
+            </Nav.Link>
+            <Nav.Link
+              onClick={handleLoggingButton}
+              className={
+                headerStyle ? "orange-link-black" : "orange-link-button"
+              }
+            >
+              {loggedInUser.name ? "LogOut" : "Login"}
+            </Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
       </Navbar>
     </Container>
   );

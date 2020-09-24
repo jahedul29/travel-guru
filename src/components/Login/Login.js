@@ -1,7 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 import { useForm } from "react-hook-form";
-import { useHistory, useLocation } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import { UserAndPlaceContext } from "../../App";
 import "./Login.css";
 import {
@@ -20,14 +20,16 @@ const Login = () => {
   const { register, handleSubmit, errors, getValues } = useForm();
   // state for toggling new user and registered user
   const [isNewUser, setIsNewUser] = useState(true);
-  // State for storing form data
-  const [user, setUser] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
+
   // state for storing logged in user data
-  const { loggedInUser, setLoggedInUser } = useContext(UserAndPlaceContext);
+  const { loggedInUser, setLoggedInUser, setHeaderStyle } = useContext(
+    UserAndPlaceContext
+  );
+
+  useEffect(() => {
+    setHeaderStyle("white");
+  }, [setHeaderStyle]);
+
   // State for storing login error message
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -41,7 +43,6 @@ const Login = () => {
       email: data.email,
       password: data.password,
     };
-    setUser(newUser);
 
     isNewUser
       ? createWithEmailAndPassword(
@@ -58,9 +59,8 @@ const Login = () => {
         if (typeof res === "string") {
           setErrorMessage(res);
         } else {
-          setLoggedInUser(res);
           setErrorMessage("");
-          history.replace(from);
+          history.replace("/verifyEmail");
         }
       })
       .catch((error) => {});
@@ -102,128 +102,143 @@ const Login = () => {
     <Container>
       <div className="form-container">
         {loggedInUser.name && <h5>Welcome {loggedInUser.name}</h5>}
-        <h4>{isNewUser ? "Create an account" : "Sign In"}</h4>
-        <form className="signing-form" onSubmit={handleSubmit(onSubmit)}>
-          {isNewUser && (
+
+        <div
+          className="m-auto"
+          style={{
+            width: "360px",
+          }}
+        >
+          <h4>{isNewUser ? "Create an account" : "Sign In"}</h4>
+          <form className="signing-form" onSubmit={handleSubmit(onSubmit)}>
+            {isNewUser && (
+              <input
+                placeholder="First Name"
+                className="form-control"
+                name="firstName"
+                ref={register({
+                  required: "Name is required",
+                  pattern: {
+                    value: /[A-Za-z]{3}/,
+                    message:
+                      "Name must contain minimum 3 letter and only letter", // <p>error message</p>
+                  },
+                })}
+              />
+            )}
+            {errors.firstName && (
+              <span className="error">{errors.firstName.message}</span>
+            )}
+
+            {isNewUser && (
+              <input
+                placeholder="Last Name"
+                className="form-control"
+                name="lastName"
+                ref={register({
+                  required: "Name is required",
+                  pattern: {
+                    value: /[A-Za-z]{3}/,
+                    message:
+                      "Name must contain minimum 3 letter and only letter", // <p>error message</p>
+                  },
+                })}
+              />
+            )}
+            {errors.lastName && (
+              <span className="error">{errors.lastName.message}</span>
+            )}
+
             <input
-              placeholder="First Name"
+              placeholder="Your Email"
               className="form-control"
-              name="firstName"
+              name="email"
               ref={register({
-                required: "Name is required",
+                required: "Email required",
                 pattern: {
-                  value: /[A-Za-z]{3}/,
-                  message: "Name must contain minimum 3 letter and only letter", // <p>error message</p>
+                  value: /^([a-zA-Z0-9_\-\\.]+)@([a-zA-Z0-9_\-\\.]+)\.([a-zA-Z]{2,5})$/,
+                  message: "Enter a valid email",
                 },
               })}
             />
-          )}
-          {errors.firstName && (
-            <span className="error">{errors.firstName.message}</span>
-          )}
+            {errors.email && (
+              <span className="error">{errors.email.message}</span>
+            )}
 
-          {isNewUser && (
             <input
-              placeholder="Last Name"
-              className="form-control"
-              name="lastName"
-              ref={register({
-                required: "Name is required",
-                pattern: {
-                  value: /[A-Za-z]{3}/,
-                  message: "Name must contain minimum 3 letter and only letter", // <p>error message</p>
-                },
-              })}
-            />
-          )}
-          {errors.lastName && (
-            <span className="error">{errors.lastName.message}</span>
-          )}
-
-          <input
-            placeholder="Your Email"
-            className="form-control"
-            name="email"
-            ref={register({
-              required: "Email required",
-              pattern: {
-                value: /^([a-zA-Z0-9_\-\\.]+)@([a-zA-Z0-9_\-\\.]+)\.([a-zA-Z]{2,5})$/,
-                message: "Enter a valid email",
-              },
-            })}
-          />
-          {errors.email && (
-            <span className="error">{errors.email.message}</span>
-          )}
-
-          <input
-            placeholder="Enter a password"
-            type="password"
-            className="form-control"
-            name="password"
-            ref={register({
-              required: "Password required",
-              pattern: {
-                value: /^([a-zA-Z0-9@*#]{8,15})$/,
-                message:
-                  "Password must contain Small and capital letter, Number and any character. It should be 8-15 char long",
-              },
-            })}
-          />
-          {errors.password && (
-            <span className="error">{errors.password.message}</span>
-          )}
-
-          {isNewUser && (
-            <input
-              placeholder="Confirm password"
+              placeholder="Enter a password"
               type="password"
               className="form-control"
-              name="confirm"
+              name="password"
               ref={register({
-                required: true,
-                validate: (val) =>
-                  val === getValues("password") || "Password don't match",
+                required: "Password required",
+                pattern: {
+                  value: /^([a-zA-Z0-9@*#]{8,15})$/,
+                  message:
+                    "Password must contain Small and capital letter, Number and any character. It should be 8-15 char long",
+                },
               })}
             />
-          )}
-          {errors.confirm && (
-            <span className="error">{errors.confirm.message}</span>
-          )}
+            {errors.password && (
+              <span className="error">{errors.password.message}</span>
+            )}
 
-          <input
-            className="form-control submit-btn"
-            type="submit"
-            value={isNewUser ? "Sign Up" : "Sign In"}
-          />
-          <input
-            onClick={() => {
-              setIsNewUser(!isNewUser);
-              setErrorMessage("");
-            }}
-            type="button"
-            className="form-control toggle-btn text-center"
-            value={
-              isNewUser ? "Already have an account?" : "Create new account"
-            }
-          ></input>
-        </form>
-        {errorMessage && <span className="error">{errorMessage}</span>}
-        {!isNewUser && (
-          <div>
-            <h6 className="or-line">
-              <span>Or</span>
-            </h6>
-            <div onClick={googleSignIn} className="login-alternative">
-              <img src="https://i.imgur.com/P9ZVhek.png" alt="" />
-              <h6>Sign in with google</h6>
+            {isNewUser && (
+              <input
+                placeholder="Confirm password"
+                type="password"
+                className="form-control"
+                name="confirm"
+                ref={register({
+                  required: true,
+                  validate: (val) =>
+                    val === getValues("password") || "Password don't match",
+                })}
+              />
+            )}
+            {errors.confirm && (
+              <span className="error">{errors.confirm.message}</span>
+            )}
+
+            <input
+              className="form-control submit-btn"
+              type="submit"
+              value={isNewUser ? "Sign Up" : "Sign In"}
+            />
+            <input
+              onClick={() => {
+                setIsNewUser(!isNewUser);
+                setErrorMessage("");
+              }}
+              type="button"
+              className="form-control toggle-btn text-center"
+              value={
+                isNewUser ? "Already have an account?" : "Create new account"
+              }
+            ></input>
+          </form>
+          {errorMessage && (
+            <span className="error">
+              {errorMessage} <br />{" "}
+            </span>
+          )}
+          {!isNewUser && <Link to="/resetPassword">Forget password?</Link>}
+          {!isNewUser && (
+            <div>
+              <h6 className="or-line">
+                <span>Or</span>
+              </h6>
+              <div onClick={googleSignIn} className="login-alternative">
+                <img src="https://i.imgur.com/P9ZVhek.png" alt="" />
+                <h6 className="mt-1">Sign in with google</h6>
+              </div>
+              <div onClick={fbLoginIn} className="login-alternative">
+                <img src="https://i.imgur.com/oozxCkP.png" alt="" />
+                <h6 className="mt-1">Sign in with facebook</h6>
+              </div>
             </div>
-            <div onClick={fbLoginIn} className="login-alternative">
-              <img src="https://i.imgur.com/oozxCkP.png" alt="" />
-              <h6>Sign in with facebook</h6>
-            </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </Container>
   );

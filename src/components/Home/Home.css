@@ -2,12 +2,17 @@
   width: 100%;
   color: white;
   padding: 1%;
+  margin-top: 130px;
 }
 .banner-container {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+  background-image: linear-gradient(rgba(0, 0, 0, 0.685), rgba(0, 0, 0, 0.698)),
     url("https://i.imgur.com/KsEpvcc.jpg");
-  margin: 0;
   background-size: cover;
+  background-position: center;
+  position: absolute;
+  top: 0;
+  z-index: -1;
+  height: 750px;
 }
 
 .carousel-img {
@@ -16,12 +21,26 @@
 
 .orange-button {
   background-color: orange;
-  color: white;
-  margin: 0 30%;
   padding: 1% 4%;
   border-radius: 5px;
+  border: none;
 }
 
 .custom-switch {
   padding: 0 !important;
+}
+
+.swiper-slide img {
+  width: 80%;
+}
+
+.swiper-slide {
+  float: left;
+  width: 45% !important;
+  list-style: none;
+  opacity: 0.5;
+}
+
+.swiper-slide-active {
+  opacity: 1;
 }

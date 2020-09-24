@@ -66,9 +66,11 @@ export const handleCreateWithEmailAndPassword = (name, email, password) => {
         name: name,
         email: email,
       };
+      sendEmailVerification();
       return newUser;
     })
     .catch((error) => {
+      console.log("From create method", error.message);
       return error.message;
     });
 };
@@ -79,6 +81,9 @@ export const handleSignInWithEmailAndPassword = (email, password) => {
     .auth()
     .signInWithEmailAndPassword(email, password)
     .then((res) => {
+      if (!res.user.emailVerified) {
+        return "Check your email to confirm your account";
+      }
       const newUser = {
         name: res.user.displayName,
         email: res.user.email,
@@ -124,4 +129,25 @@ const updateCurrentUserInfo = (name) => {
       // An error happened.
       console.log("Update failed");
     });
+};
+
+// Password reset
+export const handlePasswordReset = (email) => {
+  return firebase
+    .auth()
+    .sendPasswordResetEmail(email)
+    .then((res) => {})
+    .catch(function (error) {
+      return error.message;
+    });
+};
+
+// Email varification
+export const sendEmailVerification = () => {
+  var user = firebase.auth().currentUser;
+
+  user
+    .sendEmailVerification()
+    .then((res) => {})
+    .catch((error) => {});
 };

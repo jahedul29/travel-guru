@@ -19,7 +19,12 @@ const Hotel = (props) => {
     <Row>
       {/* Hotel image column */}
       <Col md={6} className="mb-2">
-        <img className="hotel-img" src={photoUrl} alt="" />
+        <img
+          style={{ borderRadius: "10px" }}
+          className="hotel-img"
+          src={photoUrl}
+          alt=""
+        />
       </Col>
 
       {/* Hotel information column */}

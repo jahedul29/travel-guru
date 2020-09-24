@@ -1,63 +1,54 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import "./StartBooking.css";
 import { Controller, useForm } from "react-hook-form";
 import { UserAndPlaceContext } from "../../App";
 import ReactDatePicker from "react-datepicker";
+import { addDays } from "date-fns";
 
 // importing datepicker css
 import "react-datepicker/dist/react-datepicker.css";
 
-// default values for useForms parameter
-const defaultvalues = {
-  from: "",
-  to: "",
-  origin: "",
-  destination: "",
-};
-
 const StartBooking = () => {
   const history = useHistory();
 
-  // hooks for react-hooks-form
-  const { register, handleSubmit, errors, control } = useForm({
-    defaultvalues,
-  });
-
   // Receiving data from context
-  const { selectedPlace } = useContext(UserAndPlaceContext);
-
-  // State for getting form data
-  const [formData, setFormData] = useState({
-    origin: "",
-    destination: "",
-    from: "",
-    to: "",
-  });
-
-  // Function to handle form submit
-  const onSubmit = (data) => {
-    setFormData(data);
-    history.push("/availableHotels");
-  };
+  const { selectedPlace, setHeaderStyle, setBookingInfo } = useContext(
+    UserAndPlaceContext
+  );
 
   // destructuring required data
   const { placeName, description } = selectedPlace;
 
+  // hooks for react-hooks-form
+  const { register, handleSubmit, errors, control, getValues } = useForm({});
+
+  useEffect(() => {
+    setHeaderStyle("");
+  }, [setHeaderStyle]);
+
+  // Function to handle form submit
+  const onSubmit = (data) => {
+    setBookingInfo(data);
+    history.push("/availableHotels");
+  };
+
   return (
-    <Container className="booking-container" fluid>
+    <Container className="banner-container" fluid>
       <section className="banner">
         <Row>
           {/* Booking place details */}
-          <Col md={6}>
-            <h1>{placeName}</h1>
-            <p>{description}</p>
+          <Col md={6} className="mb-1">
+            <div className="m-auto">
+              <h1>{placeName}</h1>
+              <p>{description}</p>
+            </div>
           </Col>
 
           {/* Booking Form */}
-          <Col md={6}>
-            <div className="booking-form-container">
+          <Col md={6} className="mb-1">
+            <div className="booking-form-container m-auto">
               <form className="booking-form" onSubmit={handleSubmit(onSubmit)}>
                 <input
                   className="form-control"
@@ -71,6 +62,7 @@ const StartBooking = () => {
                 <input
                   className="form-control mt-4"
                   placeholder="Destination"
+                  readOnly
                   defaultValue={selectedPlace.placeName}
                   name="destination"
                   ref={register({ required: "Destination required" })}
@@ -84,13 +76,20 @@ const StartBooking = () => {
                   <div style={{ float: "left", width: "50%" }}>
                     <Controller
                       control={control}
+                      defaultValue=""
                       name="from"
-                      register={register({ required: "From required" })}
+                      rules={{
+                        required: {
+                          value: true,
+                          message: "From required",
+                        },
+                      }}
                       render={(props) => (
                         <ReactDatePicker
                           className="form-control"
                           placeholderText="From"
                           minDate={new Date()}
+                          maxDate={addDays(new Date(), 7)}
                           dateFormat="dd/MM"
                           onChange={(e) => props.onChange(e)}
                           selected={props.value}
@@ -109,13 +108,23 @@ const StartBooking = () => {
                   >
                     <Controller
                       control={control}
+                      defaultValue=""
                       name="to"
-                      register={register({ required: "To required" })}
+                      rules={{
+                        required: {
+                          value: true,
+                          message: "To required",
+                        },
+                        validate: () =>
+                          getValues("from") < getValues("to") ||
+                          "To must be less then from.",
+                      }}
                       render={(props) => (
                         <ReactDatePicker
                           className="form-control ml-3"
                           placeholderText="To"
                           minDate={new Date()}
+                          maxDate={addDays(new Date(), 7)}
                           dateFormat="dd/MM"
                           onChange={(e) => props.onChange(e)}
                           selected={props.value}
