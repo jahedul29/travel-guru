@@ -99,16 +99,9 @@ const Login = () => {
   };
 
   return (
-    <Container>
+    <Container className="login-container">
       <div className="form-container">
-        {loggedInUser.name && <h5>Welcome {loggedInUser.name}</h5>}
-
-        <div
-          className="m-auto"
-          style={{
-            width: "360px",
-          }}
-        >
+        <div className="m-auto input-form-container">
           <h4>{isNewUser ? "Create an account" : "Sign In"}</h4>
           <form className="signing-form" onSubmit={handleSubmit(onSubmit)}>
             {isNewUser && (

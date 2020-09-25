@@ -72,3 +72,30 @@
   text-align: center;
   width: 250px;
 }
+
+.input-form-container {
+  width: 90%;
+}
+
+@media only screen and (max-width: 430px) {
+  .form-container {
+    width: 95%;
+    margin: auto;
+  }
+  .signing-form {
+    width: 96%;
+    margin: auto;
+  }
+
+  .form-container h4 {
+    text-align: center;
+  }
+
+  .form-container input {
+    width: 99%;
+  }
+
+  .input-form-container {
+    width: 95%;
+  }
+}

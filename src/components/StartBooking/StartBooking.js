@@ -72,7 +72,7 @@ const StartBooking = () => {
                 )}
 
                 {/* React detepickers */}
-                <div style={{ width: "355px", margin: "15px 0px" }}>
+                <div className="date-input-container">
                   <div style={{ float: "left", width: "50%" }}>
                     <Controller
                       control={control}

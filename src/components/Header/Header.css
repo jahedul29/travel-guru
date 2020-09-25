@@ -36,4 +36,6 @@ button:focus {
 
 .show {
   background-color: rgba(133, 143, 115, 0.945);
+  padding: 5%;
+  border-radius: 0px 10px 0px 10px;
 }
